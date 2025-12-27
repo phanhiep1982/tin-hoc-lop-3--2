@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tin Học Lớp 3 - Phần 2 (iOS Ready)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #fdf2f8;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fbcfe8' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            touch-action: manipulation;
+        }
+        .btn-3d {
+            transition: all 0.1s;
+            transform: translateY(0);
+            box-shadow: 0 6px 0 rgb(0,0,0,0.2);
+            position: relative;
+        }
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgb(0,0,0,0.2);
+        }
+        .card-enter { animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .correct-anim { animation: bounce 0.5s; background-color: #86efac !important; border-color: #22c55e !important; color: #064e3b !important; }
+        .wrong-anim { animation: shake 0.5s; background-color: #fca5a5 !important; border-color: #ef4444 !important; color: #7f1d1d !important;}
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-pink-400 relative min-h-[600px] flex flex-col">
+        
+        <div class="bg-pink-500 p-4 text-white flex justify-between items-center shadow-md z-10">
+            <div class="flex items-center gap-3">
+                <div class="bg-white text-pink-500 rounded-full w-12 h-12 flex items-center justify-center font-bold shadow-sm text-2xl border-2 border-pink-200">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl leading-tight">Tin Học Lớp 3 (Phần 2)</h1>
+                    <p class="text-xs text-pink-100 font-bold bg-pink-600 inline-block px-2 rounded-lg mt-1" id="mode-indicator">Sẵn sàng</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right bg-pink-600 px-3 py-1 rounded-xl border border-pink-300">
+                    <p class="text-[10px] text-pink-100 uppercase font-bold">Điểm số</p>
+                    <p class="font-black text-2xl text-yellow-300 drop-shadow-sm" id="score">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full bg-gray-200 h-4 border-b-2 border-gray-300">
+            <div id="progress-bar" class="bg-gradient-to-r from-purple-400 to-pink-500 h-4 transition-all duration-500 shadow-inner" style="width: 0%"></div>
+        </div>
+
+        <div id="game-container" class="flex-1 p-6 flex flex-col justify-center items-center relative bg-pink-50">
+            <div class="text-center">
+                <div class="text-6xl text-pink-500 mb-6 animate-bounce"><i class="fas fa-play-circle"></i></div>
+                <h2 class="text-2xl font-bold text-gray-700 mb-2">Phần 2: Nâng Cao</h2>
+                <p class="text-gray-500 mb-8">20 câu về Chuột, Bàn phím và Thực hành.</p>
+                <button id="btn-start" class="btn-3d bg-green-500 text-white font-black text-2xl py-4 px-12 rounded-full border-b-4 border-green-700 shadow-xl hover:bg-green-400">
+                    BẮT ĐẦU NGAY
+                </button>
+            </div>
+        </div>
+
+        <div id="feedback-area" class="min-h-[100px] p-4 bg-white border-t-2 border-gray-100 flex justify-center items-center">
+            <div class="flex items-center gap-4 text-gray-400">
+                <i class="fas fa-volume-up"></i>
+                <p class="text-sm italic font-bold">Nhấn nút để kích hoạt âm thanh trên iPhone...</p>
+            </div>
+        </div>
+    </div>
+
+    <audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
+    <audio id="sound-wrong" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
+    <audio id="sound-win" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
+
+    <script>
+        const rawQuestions = [
+            { id: 1, type: 'match', question: "Hành động: 'Dùng ngón tay trỏ nhấn nút trái chuột một lần' gọi là gì?", options: ["Nháy chuột", "Kéo thả chuột", "Nháy nút phải chuột"], correct: 0, explain: "Chính xác! Nhấn 1 lần gọi là Nháy chuột." },
+            { id: 2, type: 'match', question: "Hành động: 'Dùng ngón tay giữa nhấn nút phải chuột một lần' gọi là gì?", options: ["Nháy đúp chuột", "Nháy nút phải chuột", "Di chuyển chuột"], correct: 1, explain: "Dùng ngón giữa nhấn bên phải là Nháy nút phải chuột." },
+            { id: 4, type: 'match', question: "Hành động: 'Nhấn giữ nút trái chuột, di chuyển đến vị trí mới thì thả tay' gọi là gì?", options: ["Kéo thả chuột", "Nháy đúp chuột", "Cuộn chuột"], correct: 0, explain: "Nhấn giữ - Di chuyển - Thả là thao tác Kéo thả chuột." },
+            { id: 5, type: 'quiz', question: "Để tắt máy tính, Bước 1 là nháy chuột vào Start. Bước 2 là nháy chuột vào đâu?", options: ["Power", "Shutdown", "Restart"], correct: 0, explain: "Đúng rồi. Trình tự là: Start -> Power -> Shutdown." },
+            { id: 6, type: 'quiz', question: "Sau khi chọn Power, bước cuối cùng để tắt máy hoàn toàn là chọn lệnh nào?", options: ["Sleep", "Shutdown", "Restart"], correct: 1, explain: "Phải chọn Shutdown để tắt hẳn máy." },
+            { id: 10, type: 'quiz', question: "Trong các bộ phận sau, đâu là thành phần của máy tính để bàn?", options: ["Màn hình, Thân máy, Bàn phím, Chuột", "Màn hình, Ti vi, Điều hòa", "Bàn phím, Chuột, Quạt máy"], correct: 0, explain: "Máy tính để bàn gồm 4 món chính: Màn hình, Thân máy, Bàn phím, Chuột." },
+            { id: 11, type: 'match', question: "Hàng phím trên cùng chứa các số (1, 2, 3...) gọi là hàng phím gì?", options: ["Hàng phím số", "Hàng phím trên", "Hàng phím dưới"], correct: 0, explain: "Đó là Hàng phím số." },
+            { id: 14, type: 'match', question: "Hàng phím dài nhất dưới cùng gọi là gì?", options: ["Hàng phím cách", "Hàng phím số", "Hàng phím trên"], correct: 0, explain: "Đó là Hàng phím chứa phím cách (Space)." },
+            { id: 16, type: 'quiz', question: "Phông chữ (Font) được yêu cầu sử dụng trong bài thực hành là gì?", options: ["Arial", "Times New Roman", "Calibri"], correct: 1, explain: "Phải chọn phông chữ Times New Roman." },
+            { id: 20, type: 'quiz', question: "Tuyệt đối KHÔNG được làm gì với dây kết nối máy tính?", options: ["Tự ý cắm hoặc rút dây", "Nhìn dây", "Để dây gọn gàng"], correct: 0, explain: "Không được tự cắm hoặc rút các dây kết nối với ổ điện." }
+        ];
+
+        let questions = [];
+        let currentQIndex = 0;
+        let score = 0;
+        let wrongAnswers = [];
+        let isReviewMode = false;
+
+        // HÀM ĐỌC THÔNG MINH CHO IPHONE
+        function speak(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = 'vi-VN';
+            const voices = window.speechSynthesis.getVoices();
+            const viVoice = voices.find(v => v.lang.includes('vi'));
+            if (viVoice) msg.voice = viVoice;
+            window.speechSynthesis.speak(msg);
+        }
+
+        // MỞ KHÓA ÂM THANH KHI BẤM NÚT
+        document.getElementById('btn-start').addEventListener('click', function() {
+            speak(""); // Mồi âm thanh
+            startGame();
+        });
+
+        function startGame() {
+            questions = rawQuestions.sort(() => Math.random() - 0.5);
+            currentQIndex = 0;
+            score = 0;
+            wrongAnswers = [];
+            isReviewMode = false;
+            document.getElementById('score').textContent = "0";
+            renderQuestion();
+            speak("Chào mừng bé đến với phần hai nâng cao.");
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQIndex];
+            document.getElementById('progress-bar').style.width = `${(currentQIndex / questions.length) * 100}%`;
+            const container = document.getElementById('game-container');
+            container.innerHTML = '';
+            
+            const card = document.createElement('div');
+            card.className = "w-full text-center card-enter";
+            card.innerHTML = `<h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-6 bg-white p-4 rounded-xl border-2 border-pink-100 shadow-sm">${q.question}</h2>`;
+            
+            const grid = document.createElement('div');
+            grid.className = "grid grid-cols-1 gap-3";
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "btn-3d w-full bg-white border-2 border-pink-200 text-pink-700 font-bold py-4 px-4 rounded-xl text-lg flex items-center gap-3";
+                btn.innerHTML = `<span class="bg-pink-100 text-pink-600 w-8 h-8 rounded-full flex items-center justify-center text-sm font-black">${String.fromCharCode(65 + idx)}</span> <span class="text-left flex-1">${opt}</span>`;
+                btn.onclick = () => checkAnswer(idx, q.correct, btn, q);
+                grid.appendChild(btn);
+            });
+            card.appendChild(grid);
+            container.appendChild(card);
+            setTimeout(() => speak(q.question), 500);
+        }
+
+        function checkAnswer(userAns, correctAns, btnElement, qObj) {
+            const allBtns = document.querySelectorAll('#game-container button');
+            allBtns.forEach(b => b.disabled = true);
+            if (userAns === correctAns) {
+                btnElement.classList.add('correct-anim');
+                document.getElementById('sound-correct').play();
+                score += 10;
+                document.getElementById('score').textContent = score;
+                speak("Đúng rồi. " + qObj.explain);
+                confetti({ particleCount: 40, spread: 60 });
+            } else {
+                btnElement.classList.add('wrong-anim');
+                allBtns[correctAns].classList.add('correct-anim');
+                document.getElementById('sound-wrong').play();
+                if (!isReviewMode) wrongAnswers.push(qObj);
+                speak("Chưa đúng. " + qObj.explain);
+            }
+            setTimeout(nextQuestion, 4500);
+        }
+
+        function nextQuestion() {
+            currentQIndex++;
+            if (currentQIndex < questions.length) renderQuestion();
+            else finishRound();
+        }
+
+        function finishRound() {
+            const container = document.getElementById('game-container');
+            container.innerHTML = '';
+            if (!isReviewMode && wrongAnswers.length > 0) {
+                isReviewMode = true;
+                questions = [...wrongAnswers];
+                currentQIndex = 0;
+                container.innerHTML = `<button onclick="renderQuestion()" class="btn-3d bg-orange-500 text-white font-bold py-4 px-10 rounded-full">ÔN LẠI CÂU SAI</button>`;
+                speak("Bé cùng ôn lại các câu chưa đúng nhé.");
+            } else {
+                document.getElementById('sound-win').play();
+                container.innerHTML = `<h2 class="text-3xl font-black text-pink-600">HOÀN THÀNH!</h2><p class="text-xl font-bold mt-4">Điểm: ${score}</p><button onclick="location.reload()" class="mt-8 btn-3d bg-green-500 text-white font-bold py-3 px-8 rounded-full">CHƠI LẠI</button>`;
+                speak("Tuyệt vời, bé đã hoàn thành xuất sắc phần hai.");
+            }
+        }
+    </script>
+</body>
+</html>
