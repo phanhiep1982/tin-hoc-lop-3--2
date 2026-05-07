@@ -2,184 +2,303 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tin Học Lớp 3 - Giọng Chị Google Chuẩn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bé Vui Học Công Nghệ 3</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: #fdf2f8;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fbcfe8' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background: linear-gradient(135deg, #FFEDD5 0%, #FEF3C7 100%);
             touch-action: manipulation;
         }
-        .btn-3d { transition: all 0.1s; transform: translateY(0); box-shadow: 0 6px 0 rgb(0,0,0,0.2); position: relative; }
-        .btn-3d:active { transform: translateY(4px); box-shadow: 0 2px 0 rgb(0,0,0,0.2); }
-        .card-enter { animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .correct-anim { animation: bounce 0.5s; background-color: #86efac !important; border-color: #22c55e !important; color: #064e3b !important; }
-        .wrong-anim { animation: shake 0.5s; background-color: #fca5a5 !important; border-color: #ef4444 !important; color: #7f1d1d !important;}
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
-        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        .btn-3d {
+            transition: all 0.1s;
+            box-shadow: 0 6px 0 #c2410c;
+        }
+
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #c2410c;
+        }
+
+        .btn-option {
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 #d1d5db;
+        }
+
+        .btn-option:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #d1d5db;
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .bounce-in {
+            animation: bounceIn 0.5s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .progress-bar-fill {
+            transition: width 0.5s ease-in-out;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-pink-400 relative min-h-[600px] flex flex-col">
+    <div id="app" class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-6 md:p-10 relative overflow-hidden">
         
-        <div class="bg-pink-500 p-4 text-white flex justify-between items-center shadow-md z-10">
-            <div class="flex items-center gap-3">
-                <div class="bg-white text-pink-500 rounded-full w-12 h-12 flex items-center justify-center font-bold shadow-sm text-2xl">
-                    <i class="fas fa-graduation-cap"></i>
+        <div id="start-screen" class="text-center">
+            <div class="text-6xl mb-6">🛠️</div>
+            <h1 class="text-3xl md:text-4xl font-black text-orange-600 mb-4">CÔNG NGHỆ LỚP 3</h1>
+            <p class="text-gray-600 mb-8 font-bold">Bé đã sẵn sàng ôn tập học kì II chưa nào?</p>
+            <button onclick="startGame()" class="btn-3d bg-orange-500 hover:bg-orange-600 text-white text-2xl font-black py-4 px-12 rounded-full w-full md:w-auto">
+                CHƠI NGAY 🚀
+            </button>
+        </div>
+
+        <div id="game-screen" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex-1 mr-4">
+                    <div class="h-4 bg-gray-200 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="progress-bar-fill h-full bg-green-500 w-0"></div>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="font-black text-xl leading-tight">Tin Học Lớp 3 (Phần 2)</h1>
-                    <p class="text-xs text-pink-100 font-bold bg-pink-600 inline-block px-2 rounded-lg mt-1" id="mode-indicator">Giọng Chị Google</p>
+                <span id="question-counter" class="font-black text-orange-500">1/10</span>
+            </div>
+
+            <div id="rescue-badge" class="hidden bg-red-100 text-red-600 px-3 py-1 rounded-lg text-sm font-bold mb-4 inline-block">
+                🆘 VÒNG GIẢI CỨU
+            </div>
+            <div id="question-container" class="mb-8">
+                <h2 id="question-text" class="text-xl md:text-2xl font-bold text-gray-800 leading-tight">
+                    Đang tải câu hỏi...
+                </h2>
+            </div>
+
+            <div id="options-container" class="grid grid-cols-1 gap-4">
                 </div>
-            </div>
-            <div class="text-right bg-pink-600 px-3 py-1 rounded-xl border border-pink-300">
-                <p class="text-[10px] text-pink-100 uppercase font-bold">Điểm số</p>
-                <p class="font-black text-2xl text-yellow-300" id="score">0</p>
-            </div>
         </div>
 
-        <div class="w-full bg-gray-200 h-4 border-b-2 border-gray-300">
-            <div id="progress-bar" class="bg-gradient-to-r from-purple-400 to-pink-500 h-4 transition-all duration-500 shadow-inner" style="width: 0%"></div>
+        <div id="rescue-intro" class="hidden text-center bounce-in">
+            <div class="text-6xl mb-6">🆘</div>
+            <h2 class="text-3xl font-black text-red-500 mb-4">VÒNG GIẢI CỨU!</h2>
+            <p class="text-gray-600 mb-8 font-bold">Bé hãy làm lại các câu chưa đúng để chiến thắng nhé!</p>
+            <button onclick="startRescueRound()" class="btn-3d bg-red-500 hover:bg-red-600 text-white text-2xl font-black py-4 px-12 rounded-full">
+                CỐ GẮNG LÊN! 💪
+            </button>
         </div>
 
-        <div id="game-container" class="flex-1 p-6 flex flex-col justify-center items-center relative bg-pink-50">
-            <div class="text-center">
-                <div class="text-6xl text-pink-500 mb-6 animate-bounce"><i class="fas fa-microphone-alt"></i></div>
-                <h2 class="text-2xl font-bold text-gray-700 mb-2">Bé Đã Sẵn Sàng Chưa?</h2>
-                <p class="text-gray-500 mb-8">Hãy bật loa thật to để nghe chị Google đọc câu hỏi nhé!</p>
-                <button id="btn-start" class="btn-3d bg-green-500 text-white font-black text-2xl py-4 px-12 rounded-full border-b-4 border-green-700 shadow-xl hover:bg-green-400">
-                    BẮT ĐẦU NGAY
-                </button>
-            </div>
+        <div id="win-screen" class="hidden text-center bounce-in">
+            <div class="text-6xl mb-6">🏆</div>
+            <h2 class="text-4xl font-black text-green-600 mb-4">TUYỆT VỜI!</h2>
+            <p id="final-score" class="text-xl text-gray-700 mb-8">Bé đã hoàn thành xuất sắc bài ôn tập.</p>
+            <button onclick="location.reload()" class="btn-3d bg-green-500 hover:bg-green-600 text-white text-2xl font-black py-4 px-12 rounded-full">
+                CHƠI LẠI 🔄
+            </button>
         </div>
 
-        <div id="feedback-area" class="min-h-[100px] p-4 bg-white border-t-2 border-gray-100 flex justify-center items-center">
-            <p class="text-sm italic font-bold text-gray-400">Cần có mạng để nghe giọng chị Google...</p>
-        </div>
     </div>
 
-    <audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
-    <audio id="sound-wrong" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
-    <audio id="sound-win" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
-    <audio id="google-voice" preload="auto"></audio>
-
     <script>
-        const rawQuestions = [
-            { id: 1, type: 'quiz', question: "Ngón tay nào chịu trách nhiệm nhấn nút trái chuột?", options: ["Ngón cái", "Ngón trỏ", "Ngón giữa"], correct: 1, explain: "Đúng rồi! Ngón trỏ dùng để nháy chuột trái." },
-            { id: 2, type: 'quiz', question: "Để tắt máy tính đúng cách, em chọn nút nào đầu tiên?", options: ["Nút Start", "Nút Loa", "Nút Đồng hồ"], correct: 0, explain: "Chính xác! Bấm nút Start ở góc màn hình nhé." },
-            { id: 3, type: 'quiz', question: "Hàng phím cơ sở là hàng phím có chứa 2 phím nào có gờ?", options: ["Phím G và H", "Phím F và J", "Phím A và L"], correct: 1, explain: "Chuẩn luôn! F và J là 2 phím có gai để đặt tay." },
-            { id: 4, type: 'quiz', question: "Phần mềm nào giúp em soạn thảo văn bản?", options: ["Phần mềm Paint", "Phần mềm Word", "Phần mềm Calculator"], correct: 1, explain: "Đúng! Word là phần mềm để gõ chữ." },
-            { id: 5, type: 'quiz', question: "Khi gõ phím, mắt nên cách màn hình khoảng bao nhiêu?", options: ["Sát màn hình", "50 cm đến 80 cm", "2 mét"], correct: 1, explain: "Đúng rồi! Giữ khoảng cách để bảo vệ đôi mắt nhé." }
-            // Bạn có thể thêm các câu hỏi khác của bạn vào đây...
+        // 1. DỮ LIỆU CÂU HỎI (Dựa trên nội dung PDF)
+        const questionsData = [
+            {
+                q: "Vật liệu và dụng cụ nào thường dùng để làm thủ công?",
+                options: [
+                    "Giấy màu, hồ dán, kéo, thước kẻ ✂️",
+                    "Ô tô, siêu nhân, bút chì 🏎️",
+                    "Khăn quàng, bàn, gấu bông 🧸"
+                ],
+                correct: 0,
+                tts: "Vật liệu và dụng cụ nào thường dùng để làm thủ công?"
+            },
+            {
+                q: "Khi làm thước kẻ bằng giấy, em cần chuẩn bị gì?",
+                options: [
+                    "Đất nặn và bút màu 🎨",
+                    "Giấy màu, bìa cứng, hồ dán, kéo 📏",
+                    "Compa và hộp bút chì ✏️"
+                ],
+                correct: 1,
+                tts: "Khi làm thước kẻ bằng giấy, em cần chuẩn bị gì?"
+            },
+            {
+                q: "Để đồ dùng học tập bền lâu, em nên làm gì?",
+                options: [
+                    "Vẽ bậy lên đồ dùng 🖍️",
+                    "Để bất cứ đâu sau khi dùng 🏠",
+                    "Bảo quản và sắp xếp gọn gàng ✨"
+                ],
+                correct: 2,
+                tts: "Để đồ dùng học tập bền lâu, em nên làm gì?"
+            },
+            {
+                q: "Khi chọn vật liệu làm thủ công, tính chất nào là quan trọng nhất?",
+                options: [
+                    "Phù hợp, an toàn và tận dụng đồ tái chế ♻️",
+                    "Càng đắt tiền càng tốt 💰",
+                    "Có màu sắc thật đậm 🌈"
+                ],
+                correct: 0,
+                tts: "Khi chọn vật liệu làm thủ công, tính chất nào là quan trọng nhất?"
+            },
+            {
+                q: "Thông điệp '4 Đờ' khi chơi đồ chơi là gì?",
+                options: [
+                    "Đúng lúc, đúng chỗ, đúng thời lượng, đúng cách ✅",
+                    "Đẹp, Độc, Đắt, Đỉnh 🌟",
+                    "Đùa nghịch, Đánh nhau, Đập phá, Đau ❌"
+                ],
+                correct: 0,
+                tts: "Thông điệp bốn đờ khi chơi đồ chơi là gì?"
+            },
+            {
+                q: "Các bước cắt dán hình tròn đúng trình tự là?",
+                options: [
+                    "Cắt -> Vẽ -> Dán ✂️",
+                    "Vẽ -> Cắt -> Dán 🎨",
+                    "Dán -> Cắt -> Vẽ 📐"
+                ],
+                correct: 1,
+                tts: "Các bước cắt dán hình tròn đúng trình tự là?"
+            },
+            {
+                q: "Vì sao chúng ta nên làm đồ chơi từ vật liệu đã qua sử dụng?",
+                options: [
+                    "Để bảo vệ môi trường và tiết kiệm 🌍",
+                    "Vì nó dễ làm hơn 🛠️",
+                    "Vì nhìn nó đẹp hơn 💎"
+                ],
+                correct: 0,
+                tts: "Vì sao chúng ta nên làm đồ chơi từ vật liệu đã qua sử dụng?"
+            },
+            {
+                q: "Để làm được thước kẻ bằng giấy cần thực hiện mấy bước?",
+                options: [
+                    "3 bước",
+                    "4 bước",
+                    "5 bước"
+                ],
+                correct: 1,
+                tts: "Để làm được thước kẻ bằng giấy cần thực hiện mấy bước?"
+            },
+            {
+                q: "Biển báo giao thông dùng để làm gì?",
+                options: [
+                    "Để trang trí đường phố cho đẹp 🏘️",
+                    "Chỉ dẫn người tham gia giao thông theo quy định 🚦",
+                    "Để đèn tín hiệu chiếu sáng buổi đêm 🌙"
+                ],
+                correct: 1,
+                tts: "Biển báo giao thông dùng để làm gì?"
+            },
+            {
+                q: "Để gắn cột biển báo vào biển báo, em có thể dùng gì?",
+                options: [
+                    "Dây thừng hoặc kẽm 🧵",
+                    "Nước lọc 💧",
+                    "Keo dán hoặc băng dính 2 mặt 🎞️"
+                ],
+                correct: 2,
+                tts: "Để gắn cột biển báo vào biển báo, em có thể dùng gì?"
+            }
         ];
 
-        let questions = [];
-        let currentQIndex = 0;
-        let score = 0;
-        let wrongAnswers = [];
-        let isReviewMode = false;
+        // 2. BIẾN TRẠNG THÁI
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let wrongQuestions = [];
+        let isRescueRound = false;
+        let audioCtx = null;
 
-        const googleVoice = document.getElementById('google-voice');
+        // 3. HỆ THỐNG ÂM THANH (Web Audio API)
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
 
-        // HÀM ĐỌC CHỊ GOOGLE - FIX CHO IOS
-        function speak(text) {
-            if (!text) return;
-            const encodedText = encodeURIComponent(text);
-            const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=vi&q=${encodedText}`;
-            
-            googleVoice.src = url;
-            googleVoice.load();
-            
-            // Ép iPhone phát âm thanh
-            const playPromise = googleVoice.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(e => console.log("iPhone chặn phát tự động: ", e));
+        function playSound(type) {
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.2);
             }
         }
 
-        // MỞ KHÓA ÂM THANH KHI BẤM NÚT BẮT ĐẦU
-        document.getElementById('btn-start').addEventListener('click', function() {
-            // Phát âm thanh rỗng để "xin phép" Safari
-            googleVoice.play().then(() => {
-                googleVoice.pause();
-                startGame();
-            });
-        });
+        // 4. HỆ THỐNG GIỌNG ĐỌC (TTS)
+        function normalizeText(text) {
+            return text
+                .replace(/\.\.\./g, ' gì ')
+                .replace(/Nh/g, ' Nhờ ')
+                .replace(/Gh/g, ' Gờ ')
+                .replace(/4Đ/g, ' bốn đờ ')
+                .replace(/\?/g, ' hả bé?');
+        }
 
+        async function speak(text) {
+            const cleanText = normalizeText(text);
+            const googleUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=vi&client=tw-ob`;
+            
+            const audio = new Audio(googleUrl);
+            audio.play().catch(() => {
+                // Fallback nếu Google TTS bị chặn
+                const msg = new SpeechSynthesisUtterance(cleanText);
+                msg.lang = 'vi-VN';
+                msg.rate = 1;
+                window.speechSynthesis.speak(msg);
+            });
+        }
+
+        // 5. LOGIC GAME
         function startGame() {
-            questions = rawQuestions.sort(() => Math.random() - 0.5);
-            currentQIndex = 0; score = 0; wrongAnswers = []; isReviewMode = false;
-            document.getElementById('score').textContent = "0";
-            renderQuestion();
-            speak("Chào mừng bé đến với bài học của chị Google.");
+            initAudio();
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            currentQuestions = [...questionsData];
+            currentIndex = 0;
+            wrongQuestions = [];
+            isRescueRound = false;
+            showQuestion();
         }
 
-        function renderQuestion() {
-            const q = questions[currentQIndex];
-            document.getElementById('progress-bar').style.width = `${(currentQIndex / questions.length) * 100}%`;
-            const container = document.getElementById('game-container');
-            container.innerHTML = `<div class="w-full text-center card-enter">
-                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-6 bg-white p-4 rounded-xl border-2 border-pink-100 shadow-sm">${q.question}</h2>
-                <div class="grid grid-cols-1 gap-3" id="options-grid"></div>
-            </div>`;
-            
-            const grid = document.getElementById('options-grid');
-            q.options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = "btn-3d w-full bg-white border-2 border-pink-200 text-pink-700 font-bold py-4 px-4 rounded-xl text-lg flex items-center gap-3";
-                btn.innerHTML = `<span class="bg-pink-100 text-pink-600 w-8 h-8 rounded-full flex items-center justify-center text-sm font-black">${String.fromCharCode(65 + idx)}</span> <span class="text-left flex-1">${opt}</span>`;
-                btn.onclick = () => checkAnswer(idx, q.correct, btn, q);
-                grid.appendChild(btn);
-            });
-            setTimeout(() => speak(q.question), 600);
-        }
-
-        function checkAnswer(userAns, correctAns, btnElement, qObj) {
-            const allBtns = document.querySelectorAll('#options-grid button');
-            allBtns.forEach(b => b.disabled = true);
-            if (userAns === correctAns) {
-                btnElement.classList.add('correct-anim');
-                document.getElementById('sound-correct').play();
-                score += 10;
-                document.getElementById('score').textContent = score;
-                speak("Đúng rồi! " + qObj.explain);
-                confetti({ particleCount: 40, spread: 60 });
-            } else {
-                btnElement.classList.add('wrong-anim');
-                allBtns[correctAns].classList.add('correct-anim');
-                document.getElementById('sound-wrong').play();
-                if (!isReviewMode) wrongAnswers.push(qObj);
-                speak("Chưa chính xác rồi. " + qObj.explain);
-            }
-            setTimeout(nextQuestion, 4500);
-        }
-
-        function nextQuestion() {
-            currentQIndex++;
-            if (currentQIndex < questions.length) renderQuestion();
-            else finishRound();
-        }
-
-        function finishRound() {
-            const container = document.getElementById('game-container');
-            container.innerHTML = '';
-            if (!isReviewMode && wrongAnswers.length > 0) {
-                isReviewMode = true; questions = [...wrongAnswers]; currentQIndex = 0;
-                container.innerHTML = `<button onclick="renderQuestion()" class="btn-3d bg-orange-500 text-white font-bold py-4 px-10 rounded-full shadow-lg">ÔN LẠI CÂU SAI</button>`;
-                speak("Bé hãy cùng chị Google ôn lại các câu chưa đúng nhé.");
-            } else {
-                document.getElementById('sound-win').play();
-                container.innerHTML = `<h2 class="text-3xl font-black text-pink-600">XUẤT SẮC!</h2><p class="text-xl font-bold mt-4">Điểm của bé: ${score}</p><button onclick="location.reload()" class="mt-8 btn-3d bg-green-500 text-white font-bold py-3 px-8 rounded-full">CHƠI LẠI TỪ ĐẦU</button>`;
-                speak("Chúc mừng bé đã hoàn thành xuất sắc bài thi của chị Google!");
-            }
-        }
-    </script>
-</body>
-</html>
+        function showQuestion() {
+            const question = currentQuestions[currentIndex];
+            const qCounter = document.getElementById('question-counter');
+            const
