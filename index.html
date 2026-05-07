@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bé Vui Học Công Nghệ 3</title>
+    <title>Ôn Tập Công Nghệ 3 - Học Kì II</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -15,86 +15,64 @@
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
-
         .btn-3d {
             transition: transform 0.1s, box-shadow 0.1s;
             box-shadow: 0 6px 0 #c2410c;
         }
-
         .btn-3d:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #c2410c;
+            transform: translateY(4px); box-shadow: 0 2px 0 #c2410c;
         }
-
         .btn-option {
-            transition: all 0.2s;
-            box-shadow: 0 4px 0 #d1d5db;
+            transition: all 0.2s; box-shadow: 0 4px 0 #d1d5db;
         }
-
         .btn-option:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 0 #d1d5db;
+            transform: translateY(2px); box-shadow: 0 1px 0 #d1d5db;
         }
-
-        .shake {
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
+        .shake { animation: shake 0.5s both; }
         @keyframes shake {
             10%, 90% { transform: translate3d(-1px, 0, 0); }
             20%, 80% { transform: translate3d(2px, 0, 0); }
             30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
-
-        .bounce-in {
-            animation: bounceIn 0.5s ease-out;
-        }
-
+        .bounce-in { animation: bounceIn 0.5s ease-out; }
         @keyframes bounceIn {
             0% { transform: scale(0.3); opacity: 0; }
             50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
             100% { transform: scale(1); opacity: 1; }
         }
-
-        .progress-bar-fill {
-            transition: width 0.5s ease-in-out;
-        }
-        
-        /* Đảm bảo nút trên mobile dễ bấm */
-        button { cursor: pointer; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
     <div id="app" class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-6 md:p-10 relative overflow-hidden">
         
-        <div id="start-screen" class="text-center py-10">
-            <div class="text-7xl mb-6">🛠️</div>
-            <h1 class="text-3xl md:text-4xl font-black text-orange-600 mb-4">CÔNG NGHỆ LỚP 3</h1>
-            <p class="text-gray-600 mb-8 font-bold text-lg px-4">Ôn tập học kì II cùng bé yêu nhé!</p>
-            <button id="start-btn" class="btn-3d bg-orange-500 hover:bg-orange-600 text-white text-2xl font-black py-5 px-14 rounded-full w-full md:w-auto">
-                CHƠI NGAY 🚀
+        <div id="start-screen" class="text-center py-6">
+            <div class="text-7xl mb-4">📚</div>
+            <h1 class="text-3xl font-black text-orange-600 mb-2">CÔNG NGHỆ LỚP 3</h1>
+            <p class="text-gray-500 mb-8 font-bold">Ôn tập 21 câu hỏi Học kì II</p>
+            <button id="start-btn" class="btn-3d bg-orange-500 text-white text-2xl font-black py-5 px-14 rounded-full w-full">
+                BẮT ĐẦU ÔN TẬP 🚀
             </button>
         </div>
 
         <div id="game-screen" class="hidden">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex justify-between items-center mb-4">
                 <div class="flex-1 mr-4">
                     <div class="h-4 bg-gray-200 rounded-full overflow-hidden">
-                        <div id="progress-bar" class="progress-bar-fill h-full bg-green-500 w-0"></div>
+                        <div id="progress-bar" class="h-full bg-green-500 transition-all duration-500 w-0"></div>
                     </div>
                 </div>
-                <span id="question-counter" class="font-black text-orange-500 text-xl">1/10</span>
+                <span id="question-counter" class="font-black text-orange-500 text-xl">1/21</span>
             </div>
 
             <div id="rescue-badge" class="hidden bg-red-100 text-red-600 px-4 py-1 rounded-lg text-sm font-bold mb-4 inline-block">
-                🆘 VÒNG GIẢI CỨU
+                🆘 VÒNG GIẢI CỨU (LÀM LẠI CÂU SAI)
             </div>
-            <div id="question-container" class="mb-8">
-                <h2 id="question-text" class="text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
-                    ...
+
+            <div class="mb-8">
+                <h2 id="question-text" class="text-xl md:text-2xl font-bold text-gray-800 leading-tight min-h-[80px]">
+                    Câu hỏi...
                 </h2>
             </div>
 
@@ -102,20 +80,20 @@
                 </div>
         </div>
 
-        <div id="rescue-intro" class="hidden text-center bounce-in py-10">
-            <div class="text-7xl mb-6">🆘</div>
-            <h2 class="text-3xl font-black text-red-500 mb-4">VÒNG GIẢI CỨU!</h2>
-            <p class="text-gray-600 mb-8 font-bold text-lg">Bé hãy thử lại những câu chưa đúng nhé!</p>
-            <button id="rescue-btn" class="btn-3d bg-red-500 hover:bg-red-600 text-white text-2xl font-black py-5 px-14 rounded-full">
-                SẴN SÀNG! 💪
+        <div id="rescue-intro" class="hidden text-center py-10 bounce-in">
+            <div class="text-7xl mb-6">🔄</div>
+            <h2 class="text-3xl font-black text-blue-600 mb-4">HOÀN THÀNH VÒNG 1!</h2>
+            <p class="text-gray-600 mb-8 font-bold text-lg">Bây giờ chúng mình sẽ làm lại các câu chưa đúng nhé!</p>
+            <button id="rescue-btn" class="btn-3d bg-blue-500 text-white text-2xl font-black py-5 px-14 rounded-full w-full">
+                TIẾP TỤC ✌️
             </button>
         </div>
 
-        <div id="win-screen" class="hidden text-center bounce-in py-10">
+        <div id="win-screen" class="hidden text-center py-10 bounce-in">
             <div class="text-8xl mb-6">🏆</div>
             <h2 class="text-4xl font-black text-green-600 mb-4">XUẤT SẮC!</h2>
-            <p id="final-score" class="text-xl text-gray-700 mb-8 font-bold">Bé đã hoàn thành bài ôn tập rồi!</p>
-            <button onclick="location.reload()" class="btn-3d bg-green-500 hover:bg-green-600 text-white text-2xl font-black py-5 px-14 rounded-full">
+            <p class="text-xl text-gray-700 mb-8 font-bold">Bé đã trả lời đúng toàn bộ 21 câu hỏi!</p>
+            <button onclick="location.reload()" class="btn-3d bg-green-500 text-white text-2xl font-black py-5 px-14 rounded-full w-full">
                 CHƠI LẠI 🔄
             </button>
         </div>
@@ -123,147 +101,139 @@
     </div>
 
     <script>
-        // DỮ LIỆU CÂU HỎI
-        const questionsData = [
-            { q: "Vật liệu nào thường dùng làm thủ công?", options: ["Giấy màu, hồ dán, kéo ✂️", "Ô tô, đồ chơi 🏎️", "Bàn ghế 🪑"], correct: 0, tts: "Vật liệu nào thường dùng làm thủ công?" },
-            { q: "Làm thước kẻ bằng giấy cần chuẩn bị gì?", options: ["Đất nặn 🎨", "Giấy màu, bìa cứng, thước 📏", "Compa ✏️"], correct: 1, tts: "Làm thước kẻ bằng giấy cần chuẩn bị gì?" },
-            { q: "Để đồ dùng bền lâu em nên làm gì?", options: ["Vẽ bậy lên 🖍️", "Vứt lung tung 🏠", "Sắp xếp gọn gàng ✨"], correct: 2, tts: "Để đồ dùng bền lâu em nên làm gì?" },
-            { q: "Thông điệp '4 Đờ' khi chơi là gì?", options: ["Đúng lúc, chỗ, lượng, cách ✅", "Đẹp, Đắt, Độc, Đỉnh 🌟", "Đùa, Đánh, Đập, Đau ❌"], correct: 0, tts: "Thông điệp bốn đờ khi chơi là gì?" },
-            { q: "Cắt dán hình tròn trình tự như thế nào?", options: ["Cắt -> Vẽ -> Dán ✂️", "Vẽ -> Cắt -> Dán 🎨", "Dán -> Cắt -> Vẽ 📐"], correct: 1, tts: "Cắt dán hình tròn trình tự như thế nào?" },
-            { q: "Làm thước kẻ giấy gồm mấy bước?", options: ["3 bước", "4 bước", "5 bước"], correct: 1, tts: "Làm thước kẻ giấy gồm mấy bước?" },
-            { q: "Biển báo giao thông dùng để làm gì?", options: ["Để trang trí 🏘️", "Chỉ dẫn quy định giao thông 🚦", "Chiếu sáng buổi đêm 🌙"], correct: 1, tts: "Biển báo giao thông dùng để làm gì?" },
-            { q: "Biển báo giao thông thường có mấy phần?", options: ["2 phần", "3 phần", "4 phần"], correct: 1, tts: "Biển báo giao thông thường có mấy phần?" },
-            { q: "Dụng cụ nào dùng để gắn cột biển báo?", options: ["Dây thừng 🧵", "Nước lọc 💧", "Keo hoặc băng dính 🎞️"], correct: 2, tts: "Dụng cụ nào dùng để gắn cột biển báo?" },
-            { q: "Tại sao nên dùng vật liệu tái chế?", options: ["Bảo vệ môi trường 🌍", "Vì nó rẻ 💰", "Vì nhìn lạ mắt ✨"], correct: 0, tts: "Tại sao nên dùng vật liệu tái chế?" }
+        const fullBank = [
+            { q: "Câu 1. Vật liệu và dụng cụ nào thường dùng để làm thủ công?", options: ["Giấy màu, hồ dán, giấy bìa, kéo, thước, compa, bút chì...", "Giấy màu, ô tô, siêu nhân, bút chì.", "Khăn quàng, bàn, gấu, chó."], correct: 0 },
+            { q: "Câu 2. Khi làm thước kẻ bằng giấy, em cần chuẩn bị những gì?", options: ["Kéo, compa, bút mực, hộp bút.", "Giấy màu, giấy bìa, hồ dán, bút màu, kéo, bút chì, thước kẻ.", "Đất nặn, bìa cứng, bút màu."], correct: 1 },
+            { q: "Câu 3. Biển báo giao nhau với đường ưu tiên có hình dạng gì?", options: ["Hình tròn, viền đỏ.", "Hình tam giác đều, đỉnh hướng xuống dưới.", "Hình vuông, nền xanh."], correct: 1 },
+            { q: "Câu 4. Để đồ dùng học tập bền lâu, em cần làm gì?", options: ["Vẽ bậy lên đồ dùng.", "Để bất cứ đâu sau khi dùng xong.", "Bảo quản và sắp xếp gọn gàng."], correct: 2 },
+            { q: "Câu 5. Để làm mô hình xe đồ chơi em cần thực hiện mấy bước?", options: ["2 bước", "3 bước", "4 bước"], correct: 2 },
+            { q: "Câu 6. Khi lựa chọn vật liệu làm thủ công, em cần chọn loại nào?", options: ["Phù hợp, an toàn và tận dụng vật liệu đã qua sử dụng.", "Càng đắt tiền càng tốt.", "Vật liệu có màu sắc thật đậm."], correct: 0 },
+            { q: "Câu 7. Thông điệp '4 Đờ' khi sử dụng đồ chơi là gì?", options: ["Đúng lúc, đúng chỗ, đúng thời lượng, đúng cách.", "Đẹp, Độc, Đắt, Đỉnh.", "Đùa nghịch, Đánh nhau, Đập phá, Đau."], correct: 0 },
+            { q: "Câu 8. Trình tự các bước cắt dán hình tròn là?", options: ["Cắt -> Vẽ -> Dán.", "Vẽ -> Cắt -> Dán.", "Dán -> Cắt -> Vẽ."], correct: 1 },
+            { q: "Câu 9. Vì sao nên dùng vật liệu đã qua sử dụng làm đồ chơi?", options: ["Để bảo vệ môi trường và tiết kiệm.", "Vì nó bền hơn vật liệu mới.", "Vì nó dễ làm hơn."], correct: 0 },
+            { q: "Câu 10. Khi sử dụng kéo trong làm thủ công, em cần lưu ý gì?", options: ["Cầm kéo đùa nghịch với bạn.", "Sử dụng cẩn thận để tránh gây thương tích.", "Cắt bất cứ thứ gì mình thích."], correct: 1 },
+            { q: "Câu 11. Yêu cầu sản phẩm thước kẻ bằng giấy cần đạt tiêu chuẩn gì?", options: ["Thước kẻ thẳng, các vạch chia đều, chính xác.", "Thước phải có nhiều màu sắc.", "Thước phải thật dài."], correct: 0 },
+            { q: "Câu 12. Để làm cột biển báo giao thông chắc chắn, em nên dùng vật liệu gì?", options: ["Giấy màu mỏng.", "Ống hút giấy hoặc que gỗ phù hợp.", "Sợi dây thừng."], correct: 1 },
+            { q: "Câu 13. Để làm thước kẻ bằng giấy, em cần thực hiện mấy bước?", options: ["3 bước", "4 bước", "5 bước"], correct: 1 },
+            { q: "Câu 14. Để gắn trục bánh xe vào thân xe đồ chơi, ta thường dùng?", options: ["Compa", "Băng dính hoặc keo dán", "Bút chì"], correct: 1 },
+            { q: "Câu 15. Biển báo giao thông thường gồm có mấy phần?", options: ["2 phần", "3 phần", "4 phần"], correct: 0 },
+            { q: "Câu 16. Biển báo giao thông dùng để làm gì?", options: ["Trang trí đường phố.", "Chiếu sáng buổi đêm.", "Chỉ dẫn người tham gia giao thông thực hiện đúng quy định."], correct: 2 },
+            { q: "Câu 17. Thước kẻ bằng giấy được làm từ vật liệu chính nào?", options: ["Giấy màu, compa, kéo.", "Giấy màu, bút màu, kéo.", "Giấy màu, giấy bìa, hồ dán, bút màu, kéo, bút chì."], correct: 2 },
+            { q: "Câu 18 (Nâng cao). Đâu là các bộ phận chính của một biển báo giao thông?", options: ["Biển báo, Cột biển báo, Đế biển báo.", "Mặt biển, Tay cầm, Chân đứng.", "Đèn tín hiệu, Cột, Vạch kẻ đường."], correct: 0 },
+            { q: "Câu 19 (Nâng cao). Sắp xếp quy trình làm biển báo giao thông?", options: ["Làm biển -> Làm cột -> Làm đế -> Hoàn thiện.", "Làm đế -> Làm cột -> Làm biển -> Hoàn thiện.", "Làm biển -> Hoàn thiện -> Làm cột -> Làm đế."], correct: 0 },
+            { q: "Câu 20 (Nâng cao). Quy trình làm mô hình xe đồ chơi đúng là?", options: ["Làm các bộ phận -> Lắp ráp -> Trang trí -> Hoàn thiện.", "Trang trí -> Lắp ráp -> Làm các bộ phận.", "Lắp ráp -> Làm các bộ phận -> Hoàn thiện."], correct: 0 },
+            { q: "Câu 21 (Nâng cao). Khi làm đồ chơi, bước 'Hoàn thiện sản phẩm' bao gồm việc gì?", options: ["Kiểm tra độ chắc chắn và điều chỉnh cho đẹp.", "Bỏ đi làm lại từ đầu.", "Chỉ cần dán keo là xong."], correct: 0 }
         ];
 
-        let currentQuestions = [];
+        let currentList = [];
         let currentIndex = 0;
-        let wrongQuestions = [];
-        let isRescueRound = false;
+        let wrongList = [];
+        let isRescue = false;
         let audioCtx = null;
 
-        // KHỞI TẠO ÂM THANH (DÀNH CHO iPAD)
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
-        // TẠO ÂM THANH BẰNG CODE (Không cần file mp3)
-        function playSfx(type) {
-            if (!audioCtx) return;
+        function playSfx(correct) {
+            initAudio();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            if (type === 'correct') {
-                osc.type = 'sine';
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            if (correct) {
                 osc.frequency.setValueAtTime(523, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
             } else {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
             }
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
         }
 
-        // GIỌNG ĐỌC TTS (Tối ưu cho Safari)
         function speak(text) {
-            const cleanText = text.replace(/4Đ/g, "bốn đờ").replace(/\.\.\./g, "gì");
-            
-            // Cách 1: Thử Google TTS
-            const utterance = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=vi&client=tw-ob`);
-            utterance.play().catch(() => {
-                // Cách 2: Nếu bị chặn thì dùng SpeechSynthesis mặc định của iPad
-                const msg = new SpeechSynthesisUtterance(cleanText);
-                msg.lang = 'vi-VN';
-                window.speechSynthesis.speak(msg);
+            const clean = text.replace(/Câu \d+\./, "").replace(/4 Đờ/g, "bốn đờ");
+            const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(clean)}&tl=vi&client=tw-ob`;
+            new Audio(url).play().catch(() => {
+                const m = new SpeechSynthesisUtterance(clean); m.lang = 'vi-VN';
+                window.speechSynthesis.speak(m);
             });
         }
 
-        // ĐIỀU KHIỂN GAME
         function startGame() {
-            initAudio(); // Quan trọng nhất để iPad chạy được
+            initAudio();
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
-            currentQuestions = [...questionsData].sort(() => Math.random() - 0.5);
+            currentList = [...fullBank];
             currentIndex = 0;
-            wrongQuestions = [];
-            isRescueRound = false;
+            wrongList = [];
+            isRescue = false;
             showQuestion();
         }
 
         function showQuestion() {
-            const q = currentQuestions[currentIndex];
-            document.getElementById('question-counter').innerText = `${currentIndex + 1}/${currentQuestions.length}`;
-            document.getElementById('progress-bar').style.width = `${(currentIndex / currentQuestions.length) * 100}%`;
+            const q = currentList[currentIndex];
+            document.getElementById('question-counter').innerText = `${currentIndex + 1}/${currentList.length}`;
+            document.getElementById('progress-bar').style.width = `${(currentIndex / currentList.length) * 100}%`;
             document.getElementById('question-text').innerText = q.q;
             
             const container = document.getElementById('options-container');
             container.innerHTML = '';
 
-            q.options.forEach((opt, index) => {
+            q.options.forEach((opt, i) => {
                 const btn = document.createElement('button');
-                btn.className = "btn-option bg-white border-2 border-gray-200 hover:border-orange-400 p-5 rounded-2xl text-left font-bold text-gray-700 text-lg flex items-center justify-between";
-                btn.innerHTML = `<span>${opt}</span>`;
-                btn.onclick = () => checkAnswer(index, btn);
+                btn.className = "btn-option bg-white border-2 border-gray-200 p-4 rounded-2xl text-left font-bold text-gray-700 md:text-lg flex items-center";
+                btn.innerHTML = `<span class="bg-orange-100 text-orange-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 shrink-0">${String.fromCharCode(65+i)}</span> <span>${opt}</span>`;
+                btn.onclick = () => check(i, btn);
                 container.appendChild(btn);
             });
-
-            speak(q.tts);
+            speak(q.q);
         }
 
-        function checkAnswer(idx, btn) {
-            const q = currentQuestions[currentIndex];
+        function check(idx, btn) {
+            const q = currentList[currentIndex];
             const btns = document.querySelectorAll('.btn-option');
             btns.forEach(b => b.style.pointerEvents = 'none');
 
             if (idx === q.correct) {
                 btn.classList.add('bg-green-500', 'text-white', 'border-green-600', 'bounce-in');
-                playSfx('correct');
-                confetti({ particleCount: 40, spread: 50, origin: { y: 0.8 } });
-                speak("Đúng rồi bé ơi!");
-                setTimeout(next, 1500);
+                playSfx(true);
+                confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
+                speak("Đúng rồi!");
+                setTimeout(next, 1200);
             } else {
                 btn.classList.add('bg-red-500', 'text-white', 'border-red-600', 'shake');
                 btns[q.correct].classList.add('border-green-500', 'border-4');
-                playSfx('wrong');
-                speak("Tiếc quá bé ơi!");
-                if (!isRescueRound) wrongQuestions.push(q);
+                playSfx(false);
+                speak("Tiếc quá!");
+                if (!wrongList.includes(q)) wrongList.push(q);
                 setTimeout(next, 2000);
             }
         }
 
         function next() {
             currentIndex++;
-            if (currentIndex < currentQuestions.length) {
+            if (currentIndex < currentList.length) {
                 showQuestion();
             } else {
-                if (wrongQuestions.length > 0 && !isRescueRound) {
+                if (wrongList.length > 0) {
                     document.getElementById('game-screen').classList.add('hidden');
                     document.getElementById('rescue-intro').classList.remove('hidden');
-                    speak("Chúng mình cùng vào vòng giải cứu nhé!");
+                    speak("Bé hãy làm lại các câu chưa đúng nhé!");
                 } else {
-                    showWin();
+                    document.getElementById('game-screen').classList.add('hidden');
+                    document.getElementById('win-screen').classList.remove('hidden');
+                    speak("Tuyệt vời! Bé đã hoàn thành tất cả câu hỏi!");
                 }
             }
         }
 
         function startRescue() {
-            initAudio();
-            isRescueRound = true;
-            currentQuestions = [...wrongQuestions];
-            wrongQuestions = [];
+            isRescue = true;
+            currentList = [...wrongList];
+            wrongList = [];
             currentIndex = 0;
             document.getElementById('rescue-intro').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -271,19 +241,6 @@
             showQuestion();
         }
 
-        function showWin() {
-            document.getElementById('game-screen').classList.add('hidden');
-            document.getElementById('win-screen').classList.remove('hidden');
-            speak("Tuyệt vời, bé đã chiến thắng rồi!");
-            const end = Date.now() + 3000;
-            (function frame() {
-                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
-        }
-
-        // GÁN SỰ KIỆN (Dùng cả Click và Touch để iPad nhạy hơn)
         document.getElementById('start-btn').addEventListener('click', startGame);
         document.getElementById('rescue-btn').addEventListener('click', startRescue);
     </script>
